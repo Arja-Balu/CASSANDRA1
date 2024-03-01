@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="../public/style.css">
+</head>
+<style>
+  body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right top, #a18cd1, #fbc2eb);
+  color: #fff;
+}
+
+form {
+  max-width: 350px;
+  margin: 50px auto;
+  padding: 20px;
+  background: linear-gradient(to bottom, #20bf55, #01baef);
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form div {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #ffca28;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffca28;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ffc107;
+}
+
+p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+</style>
+
+<body>
+  <h2>Login</h2>
+  <form id="loginForm">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+  </form>
+  <p>Don't have an account? <a href="/register.html">Register here</a>.</p>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username,
+            password
+          })
+        });
+        if (response.ok) {
+          alert('Login successful');
+          // Clear form fields after successful login
+          document.getElementById('username').value = '';
+          document.getElementById('password').value = '';
+          // Redirect to dashboard or perform any other action
+        } else {
+          const errorMessage = await response.text();
+          alert(`Login failed: ${errorMessage}`);
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+        alert('Error logging in.');
+      }
+    });
+  </script>
+</body>
+
+</html>
